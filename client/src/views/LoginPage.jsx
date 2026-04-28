@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import BASE_URL from "../constants/url";
 import { Link, useNavigate } from "react-router";
+import { MdKeyboard } from "react-icons/md";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -34,8 +35,11 @@ export default function LoginPage() {
         <div className="card-body gap-4">
           {/* logo */}
           <div className="flex items-center gap-2 justify-center mb-2">
-            <span className="text-2xl font-bold">
-              Hacka<span className="text-primary">Type</span>
+            <span className="text-2xl font-bold flex items-center gap-2">
+              <MdKeyboard className="text-primary" size={28} />
+              <span>
+                Hacka<span className="text-primary">Type</span>
+              </span>
             </span>
           </div>
 

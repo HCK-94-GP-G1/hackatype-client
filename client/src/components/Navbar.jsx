@@ -1,5 +1,6 @@
 import { useNavigate, NavLink } from "react-router";
 import { RiLogoutBoxLine } from "react-icons/ri";
+import { MdKeyboard } from "react-icons/md";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -13,10 +14,13 @@ export default function Navbar() {
     <div className="navbar bg-base-200 px-6">
       <div className="flex-1">
         <span
-          className="text-xl font-bold cursor-pointer"
+          className="text-xl font-bold flex items-center gap-2 cursor-pointer"
           onClick={() => navigate("/")}
         >
-          Hacka<span className="text-primary">Type</span>
+          <MdKeyboard className="text-primary" size={24} />
+          <span>
+            Hacka<span className="text-primary">Type</span>
+          </span>
         </span>
       </div>
       <div className="flex-none gap-2">
