@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import LoginPage from "./views/LoginPage";
 import RegisterPage from "./views/RegisterPage";
 import HomePage from "./views/HomePage";
@@ -10,6 +12,7 @@ import LeaderboardPage from "./views/LeaderboardPage";
 export default function App() {
   return (
     <BrowserRouter>
+      <ToastContainer />
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />

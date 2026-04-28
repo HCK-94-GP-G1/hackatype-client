@@ -3,6 +3,10 @@
   themes: dim --default;
 }
 
+[data-theme="dim"] {
+  --color-primary: #3b82f6;
+}
+
 html {
   color-scheme: dark;
   forced-color-adjust: none;
