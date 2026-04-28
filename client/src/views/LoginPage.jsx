@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import BASE_URL from "../constants/url";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -63,9 +63,9 @@ export default function LoginPage() {
 
           <p className="text-center text-sm text-base-content/60">
             Belum punya akun?{" "}
-            <a href="/register" className="text-primary hover:underline">
+            <Link to="/register" className="text-primary hover:underline">
               Register
-            </a>
+            </Link>
           </p>
         </div>
       </div>

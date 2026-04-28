@@ -2,13 +2,13 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import BASE_URL from "../constants/url";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-//handleSubmit untuk register
+  //handleSubmit untuk register
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -57,9 +57,9 @@ export default function RegisterPage() {
 
           <p className="text-center text-sm text-base-content/60">
             Sudah punya akun?{" "}
-            <a href="/login" className="text-primary hover:underline">
+            <Link to="/login" className="text-primary hover:underline">
               Login
-            </a>
+            </Link>
           </p>
         </div>
       </div>
