@@ -8,7 +8,7 @@ export default function RegisterPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
+//handleSubmit untuk register
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
