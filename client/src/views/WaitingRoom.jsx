@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { socket } from "../lib/socket";
+import { toast } from "react-toastify";
 
 export default function WaitingRoom() {
   const { roomCode } = useParams();
@@ -11,10 +12,7 @@ export default function WaitingRoom() {
   const username = localStorage.getItem("username");
 
   useEffect(() => {
-    // server emit game/start setelah kedua player siap
-    // payload berisi teks yang harus diketik dan list username kedua player
     socket.on("game/start", ({ text, players }) => {
-      // cari siapa lawan kita dari list players
       const myUsername = localStorage.getItem("username");
       const opponentUsername = players.find((p) => p !== myUsername);
       setOpponent(opponentUsername);
@@ -28,66 +26,87 @@ export default function WaitingRoom() {
 
         if (count === 0) {
           clearInterval(interval);
-          // pass text ke GamePage lewat navigate state
           navigate(`/game/${roomCode}`, { state: { text } });
         }
       }, 1000);
     });
 
+    socket.on("opponent/disconnected", () => {
+      toast.error("Opponent disconnected!");
+      navigate("/");
+    });
+
     return () => {
       socket.off("game/start");
+      socket.off("opponent/disconnected");
     };
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-6">
-      <h1 className="text-4xl font-bold">
-        Hacka<span className="text-primary">Type</span>
-      </h1>
+    <div className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center gap-6 p-8">
+      <div className="text-center flex flex-col gap-2">
+        <h2 className="text-2xl font-bold">Waiting Room</h2>
+        <p className="text-base-content/50 text-sm">
+          Share the room code with your friend to start the race
+        </p>
+      </div>
 
       <div className="card bg-base-200 w-full max-w-md shadow-xl">
         <div className="card-body items-center gap-6">
           <div className="text-center">
-            <p className="text-base-content/60 text-sm mb-1">Room Code</p>
-            <p className="text-3xl font-bold tracking-widest text-primary">
+            <p className="text-base-content/50 text-xs uppercase tracking-widest mb-1">
+              Room Code
+            </p>
+            <p className="text-4xl font-bold tracking-widest text-primary">
               {roomCode}
             </p>
           </div>
 
-          <div className="divider w-full">VS</div>
+          <div className="divider w-full my-0">VS</div>
 
           <div className="flex justify-around w-full">
-            <div className="text-center">
-              <div className="avatar placeholder mb-2">
-                <div className="bg-primary text-primary-content rounded-full w-12">
-                  <span>{username?.[0].toUpperCase()}</span>
+            <div className="text-center flex flex-col items-center gap-2">
+              <div className="avatar placeholder">
+                <div className="bg-primary text-primary-content rounded-full w-14">
+                  <span className="text-xl">{username?.[0].toUpperCase()}</span>
                 </div>
               </div>
               <p className="font-semibold">{username}</p>
-              <p className="text-xs text-success">Ready</p>
+              <span className="badge badge-success badge-sm">Ready</span>
             </div>
 
-            <div className="text-center">
-              <div className="avatar placeholder mb-2">
-                <div className="bg-base-300 text-base-content rounded-full w-12">
-                  <span>{opponent ? opponent[0].toUpperCase() : "?"}</span>
+            <div className="text-center flex flex-col items-center gap-2">
+              <div className="avatar placeholder">
+                <div className="bg-base-300 text-base-content rounded-full w-14">
+                  <span className="text-xl">
+                    {opponent ? opponent[0].toUpperCase() : "?"}
+                  </span>
                 </div>
               </div>
               <p className="font-semibold">{opponent ?? "Waiting..."}</p>
-              {opponent && <p className="text-xs text-success">Ready</p>}
+              {opponent ? (
+                <span className="badge badge-success badge-sm">Ready</span>
+              ) : (
+                <span className="badge badge-ghost badge-sm">Pending</span>
+              )}
             </div>
           </div>
 
-          {countdown ? (
-            <div className="text-6xl font-bold text-primary animate-pulse">
-              {countdown}
-            </div>
-          ) : (
-            <div className="flex items-center gap-2 text-base-content/60">
-              <span className="loading loading-dots loading-sm"></span>
-              <span>Waiting for opponent...</span>
-            </div>
-          )}
+          <div className="w-full pt-2">
+            {countdown ? (
+              <div className="flex flex-col items-center gap-2">
+                <p className="text-base-content/50 text-sm">Game starts in</p>
+                <div className="text-7xl font-bold text-primary animate-pulse">
+                  {countdown}
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center gap-2 text-base-content/50">
+                <span className="loading loading-dots loading-sm"></span>
+                <span>Waiting for opponent...</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
