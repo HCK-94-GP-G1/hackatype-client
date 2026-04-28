@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { socket } from "../lib/socket";
 
@@ -9,16 +9,28 @@ export default function HomePage() {
   const userId = localStorage.getItem("userId");
   const username = localStorage.getItem("username");
 
-  const handleCreate = () => {
+  useEffect(() => {
     socket.connect();
-    socket.emit("room/create", { userId, username });
-    socket.once("room/created", ({ roomCode }) => {
+
+    // listener dipasang di sini, bukan di click handler
+    // supaya tidak dobel kalau user klik berkali-kali
+    socket.on("room/created", ({ roomCode }) => {
       navigate(`/room/${roomCode}`);
     });
+
+    return () => {
+      // cleanup waktu user leave HomePage
+      socket.off("room/created");
+      socket.disconnect();
+    };
+  }, []);
+
+  const handleCreate = () => {
+    // cukup emit saja, listener sudah dipasang di useEffect
+    socket.emit("room/create", { userId, username });
   };
 
   const handleJoin = () => {
-    socket.connect();
     socket.emit("room/join", { userId, username, roomCode });
     navigate(`/room/${roomCode}`);
   };
