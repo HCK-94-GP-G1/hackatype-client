@@ -10,29 +10,35 @@ export default function HomePage() {
   const username = localStorage.getItem("username");
 
   useEffect(() => {
+    // connect socket sekali waktu HomePage mount
+    // tidak di-disconnect sampai game selesai supaya tetap terdaftar di room server
     socket.connect();
 
-    // listener dipasang di sini, bukan di click handler
-    // supaya tidak dobel kalau user klik berkali-kali
+    // server emit "room/created" setelah player 1 berhasil buat room
     socket.on("room/created", ({ roomCode }) => {
       navigate(`/room/${roomCode}`);
     });
 
+    // server emit "room/joined" setelah player 2 berhasil join room
+    socket.on("room/joined", ({ roomCode }) => {
+      navigate(`/room/${roomCode}`);
+    });
+
+    // cleanup: hapus listener waktu user leave HomePage
+    // supaya tidak numpuk kalau user balik ke HomePage lagi
     return () => {
-      // cleanup waktu user leave HomePage
       socket.off("room/created");
-      socket.disconnect();
+      socket.off("room/joined");
     };
   }, []);
 
+  // cukup emit — response dari server ditangani listener di atas
   const handleCreate = () => {
-    // cukup emit saja, listener sudah dipasang di useEffect
     socket.emit("room/create", { userId, username });
   };
 
   const handleJoin = () => {
     socket.emit("room/join", { userId, username, roomCode });
-    navigate(`/room/${roomCode}`);
   };
 
   return (
