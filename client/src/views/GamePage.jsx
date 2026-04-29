@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, useLocation } from "react-router";
 import { socket } from "../lib/socket";
 import { toast } from "react-toastify";
@@ -15,6 +15,7 @@ export default function GamePage() {
   const [opponentProgress, setOpponentProgress] = useState(0);
   const [finished, setFinished] = useState(false);
 
+  const textareaRef = useRef(null);
   const myProgress = text ? Math.round((input.length / text.length) * 100) : 0;
   const username = localStorage.getItem("username");
 
@@ -98,7 +99,10 @@ export default function GamePage() {
       </div>
 
       {/* Teks */}
-      <div className="w-full max-w-2xl bg-base-200 rounded-xl p-6 text-lg leading-relaxed tracking-wide font-mono">
+      <div
+        className="w-full max-w-2xl bg-base-200 rounded-xl p-6 text-lg leading-relaxed tracking-wide font-mono cursor-text relative"
+        onClick={() => textareaRef.current?.focus()}
+      >
         {text?.split("").map((char, i) => {
           let color = "text-base-content/40";
           if (i < input.length) {
@@ -118,14 +122,12 @@ export default function GamePage() {
         })}
       </div>
 
-      {/* Input */}
       <textarea
-        className="textarea textarea-bordered w-full max-w-2xl font-mono"
-        rows={3}
+        ref={textareaRef}
+        className="absolute opacity-0 w-0 h-0 pointer-events-none"
         value={input}
         onChange={handleInput}
         disabled={finished}
-        placeholder="Start typing..."
         autoFocus
       />
 
