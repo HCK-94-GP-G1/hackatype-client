@@ -42,7 +42,7 @@ export default function LeaderboardPage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center gap-6 p-8">
+    <div className="min-h-[calc(100vh-64px)] flex flex-col items-center gap-6 p-8">
       {/* Header */}
       <div className="text-center">
         <h1 className="text-5xl font-bold">
