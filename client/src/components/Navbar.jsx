@@ -1,6 +1,9 @@
 import { useNavigate, NavLink } from "react-router";
+import { useContext } from "react";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { MdKeyboard } from "react-icons/md";
+import { FaMoon } from "react-icons/fa";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -9,6 +12,7 @@ export default function Navbar() {
     localStorage.clear();
     navigate("/login");
   };
+  const { toggleTheme, setTheme, theme } = useContext(ThemeContext);
 
   return (
     <div className="navbar bg-base-200 px-6">
@@ -35,6 +39,16 @@ export default function Navbar() {
         <button className="btn btn-ghost btn-sm gap-2" onClick={handleLogout}>
           <RiLogoutBoxLine size={18} />
           Logout
+        </button>
+        <button
+          className="btn btn-ghost btn-sm gap-2"
+          onClick={() => {
+            console.log(theme);
+
+            toggleTheme();
+          }}
+        >
+          <FaMoon />
         </button>
       </div>
     </div>
