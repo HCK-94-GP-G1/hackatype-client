@@ -10,25 +10,31 @@ import ResultPage from "./views/ResultPage";
 import LeaderboardPage from "./views/LeaderboardPage";
 import AuthLayout from "./layouts/AuthLayout";
 import MainLayout from "./layouts/MainLayout";
+import { useContext } from "react";
+import { ThemeContext } from "./context/ThemeContext";
 
 export default function App() {
+const {theme} = useContext(ThemeContext)
+
   return (
     <BrowserRouter>
       <ToastContainer />
-      <Routes>
-        <Route element={<AuthLayout />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-        </Route>
+      <div data-theme={theme}>
+        <Routes>
+          <Route element={<AuthLayout />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+          </Route>
 
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/room/:roomCode" element={<WaitingRoom />} />
-          <Route path="/game/:roomCode" element={<GamePage />} />
-          <Route path="/result" element={<ResultPage />} />
-          <Route path="/leaderboard" element={<LeaderboardPage />} />
-        </Route>
-      </Routes>
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/room/:roomCode" element={<WaitingRoom />} />
+            <Route path="/game/:roomCode" element={<GamePage />} />
+            <Route path="/result" element={<ResultPage />} />
+            <Route path="/leaderboard" element={<LeaderboardPage />} />
+          </Route>
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }
