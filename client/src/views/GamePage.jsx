@@ -44,6 +44,9 @@ export default function GamePage() {
   function handleInput(e) {
     const value = e.target.value;
 
+    // block duluan sebelum apapun
+    if (value.length > text.length) return;
+
     if (!startTime) setStartTime(Date.now());
 
     setTotalKeystrokes((prev) => prev + 1);
@@ -54,7 +57,10 @@ export default function GamePage() {
     if (value === text) {
       const elapsedMinutes = (Date.now() - startTime) / 60000;
       const wpm = Math.round(text.length / 5 / elapsedMinutes);
-      const accuracy = Math.round((text.length / totalKeystrokes) * 100);
+      const accuracy =
+        totalKeystrokes > 0
+          ? Math.round((text.length / totalKeystrokes) * 100)
+          : 100;
       const time = Math.round((Date.now() - startTime) / 1000);
 
       setFinished(true);
