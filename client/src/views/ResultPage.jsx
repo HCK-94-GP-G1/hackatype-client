@@ -17,8 +17,14 @@ export default function ResultPage() {
     ? "Excellent speed! Keep maintaining that rhythm and you'll be unstoppable."
     : "Good effort! Practice your weak spots and you'll catch up next time.";
 
+  function formatTime(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  }
+
   return (
-    <div className="flex flex-1 items-center justify-center p-4">
+    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center p-4">
       <div className="card bg-base-100 shadow-xl w-full max-w-md">
         <div className="card-body items-center text-center gap-6">
           {/* Result */}
@@ -42,7 +48,7 @@ export default function ResultPage() {
             </div>
             <div className="bg-base-200 rounded-xl p-4">
               <p className="text-xs text-base-content/60 mb-1">Time</p>
-              <p className="text-2xl font-bold">{myStats.time}</p>
+              <p className="text-2xl font-bold">{formatTime(myStats.time)}</p>
             </div>
           </div>
 
