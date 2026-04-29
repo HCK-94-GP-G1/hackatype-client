@@ -55,9 +55,10 @@ export default function GamePage() {
       const elapsedMinutes = (Date.now() - startTime) / 60000;
       const wpm = Math.round(text.length / 5 / elapsedMinutes);
       const accuracy = Math.round((text.length / totalKeystrokes) * 100);
+      const time = Math.round((Date.now() - startTime) / 1000);
 
       setFinished(true);
-      socket.emit("game/finished", { roomCode, wpm, accuracy });
+      socket.emit("game/finished", { roomCode, wpm, accuracy, time });
     }
   }
 
