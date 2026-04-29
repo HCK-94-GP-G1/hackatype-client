@@ -1,14 +1,11 @@
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate, Navigate } from "react-router";
 
 export default function ResultPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const username = localStorage.getItem("username");
 
-  if (!state) {
-    navigate("/");
-    return null;
-  }
+  if (!state) return <Navigate to="/" />;
 
   const { winner, loser } = state;
   const isWinner = winner.username === username;
